@@ -37,7 +37,7 @@ public class PageRequestBuilder {
     }
 
     public PageRequestBuilder page(int pageIndex, int pageSize) {
-        if(pageIndex >= 0 && pageSize >= pageIndex) {
+        if(pageIndex >= 0 && pageSize >= 1) {
             this.pageIndex = pageIndex;
             this.pageSize = pageSize;
         }
@@ -45,7 +45,7 @@ public class PageRequestBuilder {
     }
 
     public Pageable build() {
-        if(orders.isEmpty()) {
+        if(!orders.isEmpty()) {
             return PageRequest.of(pageIndex, pageSize, Sort.by(orders));
         }
         return PageRequest.of(pageIndex, pageSize);

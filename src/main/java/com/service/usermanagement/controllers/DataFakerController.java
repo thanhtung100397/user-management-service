@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/faker")
-public class DataFakerController {
+public class DataFakerController extends BaseController {
     @Autowired
     private DataFakerService dataFakerService;
 

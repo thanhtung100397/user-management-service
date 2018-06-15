@@ -28,9 +28,13 @@ public class TransactionService {
     @Autowired
     private UserRepository userRepository;
 
-    public ResponseEntity<PageDto<TransactionPreviewDto>> getUserTransactions(String userID,
-                                                                              String sortBy, String sortType,
-                                                                              Integer pageIndex, Integer pageSize) {
+    public ResponseEntity getUserTransactions(String userID,
+                                              String sortBy, String sortType,
+                                              Integer pageIndex, Integer pageSize) {
+        boolean isUserExist = userRepository.existsById(userID);
+        if (!isUserExist) {
+            return new ResponseEntity<>(new MessageDto(ResponseMessage.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
+        }
         Pageable pageable = new PageRequestBuilder()
                 .sort(sortBy, sortType)
                 .page(pageIndex, pageSize)
@@ -40,22 +44,26 @@ public class TransactionService {
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
-    public ResponseEntity<TransactionDto> getUserTransaction(String userID, String transactionID) {
+    public ResponseEntity getUserTransaction(String userID, String transactionID) {
+        boolean isUserExist = userRepository.existsById(userID);
+        if (!isUserExist) {
+            return new ResponseEntity<>(new MessageDto(ResponseMessage.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
+        }
         TransactionDto queryResult = transactionRepository.getUserTransactionDto(userID, transactionID);
-        if(queryResult == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (queryResult == null) {
+            return new ResponseEntity<>(new MessageDto(ResponseMessage.USER_TRANSACTION_NOT_FOUND), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(queryResult, HttpStatus.OK);
     }
 
-    public ResponseEntity createNewUserTransaction(String userID, Set<NewTransactionItemDto> newTransactionItemsDto) {
+    public ResponseEntity createNewUserTransaction(String userID, NewTransactionItemsDtoSet newTransactionItemsDtoSet) {
         User userFound = userRepository.findFirstById(userID);
-        if(userFound == null) {
+        if (userFound == null) {
             return new ResponseEntity<>(new MessageDto(ResponseMessage.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
         }
         Set<String> productIDs = new HashSet<>();
         Map<String, Integer> productQuantities = new HashMap<>();
-        for (NewTransactionItemDto transactionItemDto : newTransactionItemsDto) {
+        for (NewTransactionItemDto transactionItemDto : newTransactionItemsDtoSet.getTransactionItems()) {
             productIDs.add(transactionItemDto.getProductID());
             productQuantities.put(transactionItemDto.getProductID(), transactionItemDto.getQuantity());
         }
@@ -71,16 +79,30 @@ public class TransactionService {
             transactionItem.setQuantity(quantity);
             transactionItem.setPrice(price);
             transactionItems.add(transactionItem);
+            productQuantities.remove(product.getId());
         }
-        transaction.setUser(userFound);
-        transaction.setTransactionItems(transactionItems);
-
-        return new ResponseEntity(HttpStatus.OK);
+        if (productQuantities.isEmpty()) {
+            transaction.setUser(userFound);
+            transaction.setTransactionItems(transactionItems);
+            transactionRepository.save(transaction);
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            Set<String> notFoundProductIDs = new HashSet<>();
+            for (Map.Entry<String, Integer> entry : productQuantities.entrySet()) {
+                notFoundProductIDs.add(entry.getKey());
+            }
+            return new ResponseEntity<>(new ValuesErrorDto(ResponseMessage.PRODUCT_NOT_FOUND, notFoundProductIDs),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     public ResponseEntity deleteUserTransaction(String userID, String transactionID) {
+        User userFound = userRepository.findFirstById(userID);
+        if (userFound == null) {
+            return new ResponseEntity<>(new MessageDto(ResponseMessage.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
+        }
         boolean isUserTransactionExist = transactionRepository.existsByUser_IdAndId(userID, transactionID);
-        if(!isUserTransactionExist) {
+        if (!isUserTransactionExist) {
             return new ResponseEntity<>(new MessageDto(ResponseMessage.USER_TRANSACTION_NOT_FOUND), HttpStatus.NOT_FOUND);
         }
         transactionRepository.deleteById(transactionID);

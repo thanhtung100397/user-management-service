@@ -7,4 +7,6 @@ public class ResponseMessage {
 
     public static final String USER_NOT_FOUND = "user not found";
     public static final String USER_TRANSACTION_NOT_FOUND = "user transaction not found";
+
+    public static final String PRODUCT_NOT_FOUND = "product not found";
 }

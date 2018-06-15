@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = GenderValidator.class)
+@Constraint(validatedBy = DateValidator.class)
 public @interface Date {
     String message() default "{com.service.usermanagement.validation.date.DateValidator.message}";
     Class<?>[] groups() default {};

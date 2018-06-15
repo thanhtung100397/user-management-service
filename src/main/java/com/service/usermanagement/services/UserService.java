@@ -1,7 +1,8 @@
 package com.service.usermanagement.services;
 
+import com.service.usermanagement.constants.ResponseMessage;
 import com.service.usermanagement.dao.UserRepository;
-import com.service.usermanagement.models.dto.ErrorDto;
+import com.service.usermanagement.models.dto.MessageDto;
 import com.service.usermanagement.models.dto.NewUserDto;
 import com.service.usermanagement.models.dto.PageDto;
 import com.service.usermanagement.models.dto.UserDto;
@@ -32,8 +33,11 @@ public class UserService {
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
-    public ResponseEntity<UserDto> getUser(String userID) {
+    public ResponseEntity getUser(String userID) {
         UserDto queryResult = userRepository.getUserDto(userID);
+        if(queryResult == null) {
+            return new ResponseEntity<>(new MessageDto(ResponseMessage.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(queryResult, HttpStatus.OK);
     }
 
@@ -43,30 +47,28 @@ public class UserService {
             userRepository.save(user);
             return new ResponseEntity(HttpStatus.OK);
         } catch (ParseException e) {
-            ErrorDto errorDto = new ErrorDto(e.getMessage());
-            return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ResponseEntity updateUser(String userID, NewUserDto newUserDto) {
         User user = userRepository.findFirstById(userID);
         if(user == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new MessageDto(ResponseMessage.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
         }
         try {
             user.update(newUserDto);
             userRepository.save(user);
             return new ResponseEntity(HttpStatus.OK);
         } catch (ParseException e) {
-            ErrorDto errorDto = new ErrorDto(e.getMessage());
-            return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ResponseEntity deleteUser(String userID) {
         User user = userRepository.findFirstById(userID);
         if(user == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new MessageDto(ResponseMessage.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
         }
         userRepository.delete(user);
         return new ResponseEntity(HttpStatus.OK);
