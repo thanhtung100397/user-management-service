@@ -1,5 +1,6 @@
 package com.service.usermanagement.models.dto;
 
+import com.service.usermanagement.models.entities.Gender;
 import com.service.usermanagement.models.entities.User;
 
 import java.util.Date;
@@ -9,7 +10,7 @@ public class UserDto {
     private String fullName;
     private Date birthday;
     private String address;
-    private String gender;
+    private Gender gender;
 
     public UserDto(User user) {
         setId(user.getId());
@@ -54,11 +55,11 @@ public class UserDto {
         this.address = address;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 }

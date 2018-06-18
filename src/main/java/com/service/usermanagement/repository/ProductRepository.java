@@ -1,4 +1,4 @@
-package com.service.usermanagement.dao;
+package com.service.usermanagement.repository;
 
 import com.service.usermanagement.models.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

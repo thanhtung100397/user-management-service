@@ -1,9 +1,9 @@
 package com.service.usermanagement.services;
 
 import com.service.usermanagement.constants.ResponseMessage;
-import com.service.usermanagement.dao.ProductRepository;
-import com.service.usermanagement.dao.TransactionRepository;
-import com.service.usermanagement.dao.UserRepository;
+import com.service.usermanagement.repository.ProductRepository;
+import com.service.usermanagement.repository.TransactionRepository;
+import com.service.usermanagement.repository.UserRepository;
 import com.service.usermanagement.models.dto.*;
 import com.service.usermanagement.models.entities.Product;
 import com.service.usermanagement.models.entities.Transaction;
@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -75,7 +76,7 @@ public class TransactionService {
             transactionItem.setProduct(product);
             transactionItem.setTransaction(transaction);
             int quantity = productQuantities.get(product.getId());
-            double price = quantity * product.getPrice();
+            BigDecimal price = new BigDecimal(quantity).multiply(product.getPrice());
             transactionItem.setQuantity(quantity);
             transactionItem.setPrice(price);
             transactionItems.add(transactionItem);

@@ -1,7 +1,7 @@
 package com.service.usermanagement.models.dto;
 
+import com.service.usermanagement.models.entities.Gender;
 import com.service.usermanagement.validation.date.Date;
-import com.service.usermanagement.validation.gender_string.Gender;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -12,8 +12,7 @@ public class NewUserDto {
     private String birthday;
     @NotEmpty
     private String address;
-    @Gender
-    private String gender;
+    private Gender gender;
 
     public String getFullName() {
         return fullName;
@@ -39,11 +38,11 @@ public class NewUserDto {
         this.address = address;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 }

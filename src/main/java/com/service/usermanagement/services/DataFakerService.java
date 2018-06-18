@@ -1,16 +1,12 @@
 package com.service.usermanagement.services;
 
 import com.github.javafaker.Faker;
-import com.service.usermanagement.constants.Constants;
 import com.service.usermanagement.constants.ResponseMessage;
-import com.service.usermanagement.dao.ProductRepository;
-import com.service.usermanagement.dao.TransactionRepository;
-import com.service.usermanagement.dao.UserRepository;
+import com.service.usermanagement.models.entities.*;
+import com.service.usermanagement.repository.ProductRepository;
+import com.service.usermanagement.repository.TransactionRepository;
+import com.service.usermanagement.repository.UserRepository;
 import com.service.usermanagement.models.dto.MessageDto;
-import com.service.usermanagement.models.entities.Product;
-import com.service.usermanagement.models.entities.Transaction;
-import com.service.usermanagement.models.entities.TransactionItem;
-import com.service.usermanagement.models.entities.User;
 import com.service.usermanagement.utils.PageRequestBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +37,7 @@ public class DataFakerService {
             fakeUser.setFullName(faker.name().fullName());
             fakeUser.setBirthday(faker.date().birthday());
             fakeUser.setAddress(faker.address().fullAddress());
-            fakeUser.setGender(faker.random().nextBoolean() ? Constants.FEMALE : Constants.MALE);
+            fakeUser.setGender(faker.random().nextBoolean() ? Gender.FEMALE : Gender.MALE);
             fakeUsers.add(fakeUser);
         }
         userRepository.saveAll(fakeUsers);
@@ -54,7 +51,7 @@ public class DataFakerService {
         for (int i = 0; i < number; i++) {
             Product fakeProduct = new Product();
             fakeProduct.setName(faker.commerce().productName());
-            fakeProduct.setPrice(Double.parseDouble(faker.commerce().price().replace(",", ".")));
+            fakeProduct.setPrice(new BigDecimal(faker.commerce().price().replace(",", ".")));
             fakeProducts.add(fakeProduct);
         }
         productRepository.saveAll(fakeProducts);
@@ -125,7 +122,7 @@ public class DataFakerService {
             fakeTransactionItem.setProduct(randomProduct);
             int fakeQuantity = faker.number().randomDigitNotZero();
             fakeTransactionItem.setQuantity(faker.number().randomDigitNotZero());
-            fakeTransactionItem.setPrice(fakeQuantity * randomProduct.getPrice());
+            fakeTransactionItem.setPrice(randomProduct.getPrice().multiply(new BigDecimal(fakeQuantity)));
             fakeTransactionItems.add(fakeTransactionItem);
         }
         return fakeTransactionItems;

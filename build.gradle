@@ -21,17 +21,38 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	maven {
+		url 'https://repo.spring.io/libs-milestone'
+	}
 }
 
-
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
+
+	//jpa
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	runtime('mysql:mysql-connector-java')
 
+	//swagger
 	compile("io.springfox:springfox-swagger2:2.7.0")
 	compile("io.springfox:springfox-swagger-ui:2.7.0")
 
+	//view health, status, info,... (for service discovery)
+	compile("org.springframework.boot:spring-boot-starter-actuator")
+
+	//eureka client
+	compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+
 	compile group: 'com.github.javafaker', name: 'javafaker', version: '0.15'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+ext {
+	springCloudVersion = 'Finchley.RC2'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }

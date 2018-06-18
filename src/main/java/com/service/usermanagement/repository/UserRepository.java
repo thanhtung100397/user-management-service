@@ -1,4 +1,4 @@
-package com.service.usermanagement.dao;
+package com.service.usermanagement.repository;
 
 import com.service.usermanagement.models.dto.UserDto;
 import com.service.usermanagement.models.entities.User;

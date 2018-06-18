@@ -2,10 +2,8 @@ package com.service.usermanagement.models.entities;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "product")
@@ -15,7 +13,8 @@ public class Product {
     @GeneratedValue(generator = "uuid")
     private String id;
     private String name;
-    private double price;
+    @Column(name = "price", precision = 10, scale = 4)
+    private BigDecimal price;
 
     public String getId() {
         return id;
@@ -33,11 +32,11 @@ public class Product {
         this.name = name;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }

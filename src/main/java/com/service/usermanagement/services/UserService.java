@@ -1,7 +1,7 @@
 package com.service.usermanagement.services;
 
 import com.service.usermanagement.constants.ResponseMessage;
-import com.service.usermanagement.dao.UserRepository;
+import com.service.usermanagement.repository.UserRepository;
 import com.service.usermanagement.models.dto.MessageDto;
 import com.service.usermanagement.models.dto.NewUserDto;
 import com.service.usermanagement.models.dto.PageDto;

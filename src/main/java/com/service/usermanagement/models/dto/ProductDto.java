@@ -2,10 +2,12 @@ package com.service.usermanagement.models.dto;
 
 import com.service.usermanagement.models.entities.Product;
 
+import java.math.BigDecimal;
+
 public class ProductDto {
     private String id;
     private String name;
-    private double price;
+    private BigDecimal price;
 
     public ProductDto() {
     }
@@ -32,11 +34,11 @@ public class ProductDto {
         this.name = name;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }

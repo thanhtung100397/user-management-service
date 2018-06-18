@@ -3,6 +3,7 @@ package com.service.usermanagement.models.entities;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "transaction_item")
@@ -14,7 +15,7 @@ public class TransactionItem {
     @GeneratedValue(generator = "uuid")
     private String id;
     private int quantity;
-    private double price;
+    private BigDecimal price;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "productID")
@@ -40,11 +41,11 @@ public class TransactionItem {
         this.quantity = quantity;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

@@ -18,14 +18,20 @@ public class Transaction {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userID")
     private User user;
-    private Date createdAt;
-    private Date modifiedAt;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = TransactionItem.TRANSACTION)
-    private List<TransactionItem> transactionItems;
 
-    public Transaction() {
-        this.createdAt = new Date();
-    }
+    @Temporal(TemporalType.DATE)
+    private Date createdAt;
+
+    @Temporal(TemporalType.DATE)
+    private Date modifiedAt;
+
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = TransactionItem.TRANSACTION
+    )
+    private List<TransactionItem> transactionItems;
 
     public String getId() {
         return id;
@@ -65,5 +71,15 @@ public class Transaction {
 
     public void setTransactionItems(List<TransactionItem> transactionItems) {
         this.transactionItems = transactionItems;
+    }
+
+    @PrePersist
+    public void onPersist() {
+        setCreatedAt(new Date());
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        setModifiedAt(new Date());
     }
 }

@@ -11,6 +11,9 @@ public class PageDto<T> {
     private long totalPage;
     private long totalItem;
 
+    public PageDto() {
+    }
+
     public PageDto(Page<T> queryResult) {
         this.items = queryResult.getContent();
         this.pageIndex = queryResult.getNumber();

@@ -4,10 +4,7 @@ import com.service.usermanagement.constants.Constants;
 import com.service.usermanagement.models.dto.NewUserDto;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +19,9 @@ public class User {
     private String fullName;
     private Date birthday;
     private String address;
-    private String gender;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     public User() {
     }
@@ -71,11 +70,11 @@ public class User {
         this.address = address;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 }
