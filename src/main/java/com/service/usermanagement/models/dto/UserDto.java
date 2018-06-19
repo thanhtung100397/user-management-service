@@ -3,12 +3,12 @@ package com.service.usermanagement.models.dto;
 import com.service.usermanagement.models.entities.Gender;
 import com.service.usermanagement.models.entities.User;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UserDto {
     private String id;
     private String fullName;
-    private Date birthday;
+    private LocalDate birthday;
     private String address;
     private Gender gender;
 
@@ -39,11 +39,11 @@ public class UserDto {
         this.fullName = fullName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

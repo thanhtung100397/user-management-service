@@ -4,12 +4,12 @@ import com.service.usermanagement.models.entities.Gender;
 import com.service.usermanagement.validation.date.Date;
 
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 
 public class NewUserDto {
     @NotEmpty
     private String fullName;
-    @Date
-    private String birthday;
+    private LocalDate birthday;
     @NotEmpty
     private String address;
     private Gender gender;
@@ -22,11 +22,11 @@ public class NewUserDto {
         this.fullName = fullName;
     }
 
-    public String getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

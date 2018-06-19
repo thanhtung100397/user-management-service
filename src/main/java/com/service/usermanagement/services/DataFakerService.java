@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -35,7 +37,8 @@ public class DataFakerService {
         for (int i = 0; i < number; i++) {
             User fakeUser = new User();
             fakeUser.setFullName(faker.name().fullName());
-            fakeUser.setBirthday(faker.date().birthday());
+            LocalDate fakeBirthday = faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            fakeUser.setBirthday(fakeBirthday);
             fakeUser.setAddress(faker.address().fullAddress());
             fakeUser.setGender(faker.random().nextBoolean() ? Gender.FEMALE : Gender.MALE);
             fakeUsers.add(fakeUser);

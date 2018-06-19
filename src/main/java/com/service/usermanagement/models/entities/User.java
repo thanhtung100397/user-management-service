@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -17,7 +18,7 @@ public class User {
     @GeneratedValue(generator = "uuid")
     private String id;
     private String fullName;
-    private Date birthday;
+    private LocalDate birthday;
     private String address;
 
     @Enumerated(EnumType.STRING)
@@ -33,7 +34,7 @@ public class User {
     public void update(NewUserDto newUserDto) throws ParseException {
         setFullName(newUserDto.getFullName());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
-        setBirthday(simpleDateFormat.parse(newUserDto.getBirthday()));
+        setBirthday(newUserDto.getBirthday());
         setAddress(newUserDto.getAddress());
         setGender(newUserDto.getGender());
     }
@@ -54,11 +55,11 @@ public class User {
         this.fullName = fullName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
