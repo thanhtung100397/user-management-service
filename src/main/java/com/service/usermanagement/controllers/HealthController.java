@@ -25,10 +25,10 @@ public class HealthController extends BaseController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping("/health")
-    public ResponseEntity healthCheck() {
-        return new ResponseEntity(HttpStatus.OK);
-    }
+//    @RequestMapping("/health")
+//    public ResponseEntity healthCheck() {
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
 
     @RequestMapping("/greeting")
     public ResponseEntity sayHello() {
@@ -45,12 +45,12 @@ public class HealthController extends BaseController {
         }
     }
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @GetMapping("/testDiscovery")
-    public ResponseEntity testDiscovery() {
-        return restTemplate.exchange("http://user-management-service/users", HttpMethod.GET,
-                null, new ParameterizedTypeReference<PageDto<UserDto>>() {});
-    }
+//    @Autowired
+//    private RestTemplate restTemplate;
+//
+//    @GetMapping("/testDiscovery")
+//    public ResponseEntity testDiscovery() {
+//        return restTemplate.exchange("http://user-management-service/users", HttpMethod.GET,
+//                null, new ParameterizedTypeReference<PageDto<UserDto>>() {});
+//    }
 }
