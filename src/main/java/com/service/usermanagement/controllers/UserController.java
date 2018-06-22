@@ -25,7 +25,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable("id") String userID) {
+    public ResponseEntity getUser(@PathVariable("id") String userID) {
         return userService.getUser(userID);
     }
 

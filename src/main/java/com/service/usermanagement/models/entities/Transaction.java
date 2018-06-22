@@ -19,10 +19,10 @@ public class Transaction {
     @JoinColumn(name = "userID")
     private User user;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedAt;
 
     @OneToMany(

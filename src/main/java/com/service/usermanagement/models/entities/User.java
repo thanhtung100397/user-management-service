@@ -1,14 +1,10 @@
 package com.service.usermanagement.models.entities;
 
-import com.service.usermanagement.constants.Constants;
 import com.service.usermanagement.models.dto.NewUserDto;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "user")
@@ -27,13 +23,12 @@ public class User {
     public User() {
     }
 
-    public User(NewUserDto newUserDto) throws ParseException {
+    public User(NewUserDto newUserDto) {
         update(newUserDto);
     }
 
-    public void update(NewUserDto newUserDto) throws ParseException {
+    public void update(NewUserDto newUserDto) {
         setFullName(newUserDto.getFullName());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
         setBirthday(newUserDto.getBirthday());
         setAddress(newUserDto.getAddress());
         setGender(newUserDto.getGender());

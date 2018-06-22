@@ -20,6 +20,14 @@ public class UserDto {
         setGender(user.getGender());
     }
 
+    public UserDto(String id, String fullName, LocalDate birthday, String address, Gender gender) {
+        this.id = id;
+        this.fullName = fullName;
+        this.birthday = birthday;
+        this.address = address;
+        this.gender = gender;
+    }
+
     public UserDto() {
     }
 
