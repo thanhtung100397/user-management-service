@@ -10,4 +10,4 @@ COPY . /app
 WORKDIR /app
 USER root
 RUN gradle build --stacktrace
-CMD java -jar build/libs/user-managerment-0.0.1-SNAPSHOT.jar
+CMD java -jar /app/build/libs/user-managerment-0.0.1-SNAPSHOT.jar
