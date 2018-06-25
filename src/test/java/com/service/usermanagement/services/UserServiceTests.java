@@ -38,64 +38,61 @@ public class UserServiceTests extends BaseMockitoJUnitTests {
     private UserRepository userRepository;
 
     @Test
-    public void testGetUsers_Ok() {
+    public void testGetUsers() {
         int pageIndex = 0;
         int pageSize = Constants.MAX_PAGE_SIZE;
+        int totalItem = 2;
 
         when(userRepository.getListUserDto(any(Pageable.class)))
                 .thenAnswer((Answer<Page<UserDto>>) invocation -> {
                     Pageable pageable = invocation.getArgument(0);
                     List<UserDto> usersDto = new ArrayList<>();
-                    usersDto.add(new UserDto("ID_1", "Full Name 1",
-                            LocalDate.of(2000, 1, 1), "Address 1", Gender.MALE));
-                    usersDto.add(new UserDto("ID_2", "Full Name 2",
-                            LocalDate.of(2000, 2, 2), "Address 2", Gender.FEMALE));
+                    for (int i = 0; i < totalItem; i++) {
+                        int number = i + 1;
+                        usersDto.add(new UserDto("ID_" + number, "Full Name " + number,
+                                LocalDate.of(2000, 1, 1), "Address " + number, Gender.MALE));
+                    }
                     return new PageImpl<>(usersDto, pageable, usersDto.size());
                 });
 
         ResponseEntity<PageDto<UserDto>> response = userService.getUsers(null, null, pageIndex, pageSize);
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assert.assertNotNull(response.getBody());
-        Assert.assertEquals(1, response.getBody().getTotalPage());
+        Assert.assertEquals(totalItem / pageSize + (totalItem % pageSize == 0 ? 0 : 1), response.getBody().getTotalPage());
         Assert.assertEquals(pageIndex, response.getBody().getPageIndex());
         Assert.assertEquals(pageSize, response.getBody().getPageSize());
-        Assert.assertEquals(2, response.getBody().getItems().size());
+        Assert.assertEquals(totalItem, response.getBody().getItems().size());
         Assert.assertEquals(response.getBody().getTotalItem(), response.getBody().getItems().size());
     }
 
     @Test
-    public void testGetUser_Ok() {
+    public void testGetUserByID() {
         String userID = "ID_1";
-        when(userRepository.getUserDto(any(String.class)))
-                .thenAnswer((Answer<UserDto>) invocation -> {
-                    String queryUserID = invocation.getArgument(0);
-                    return new UserDto(queryUserID, "Full Name 1",
-                            LocalDate.of(2000, 1, 1), "Address 1", Gender.MALE);
-                });
-        ResponseEntity response = userService.getUser(userID);
-        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assert.assertNotNull(response.getBody());
-        Assert.assertThat(response.getBody(), instanceOf(UserDto.class));
-        Assert.assertEquals(userID, ((UserDto) response.getBody()).getId());
-    }
-
-    @Test
-    public void testGetUser_NotFound() {
         String wrongUserID = "WRONG_ID";
+
         when(userRepository.getUserDto(any(String.class)))
                 .thenAnswer((Answer<UserDto>) invocation -> {
-                    String userID = invocation.getArgument(0);
-                    if (userID == null || wrongUserID.equals(userID)) {
+                    String uid = invocation.getArgument(0);
+                    if (uid == null || wrongUserID.equals(uid)) {
                         return null;
                     }
-                    return new UserDto(userID, "Full Name 1",
+                    return new UserDto(uid, "Full Name 1",
                             LocalDate.of(2000, 1, 1), "Address 1", Gender.MALE);
                 });
-        ResponseEntity response = userService.getUser(wrongUserID);
-        Assert.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        Assert.assertNotNull(response.getBody());
-        Assert.assertThat(response.getBody(), instanceOf(MessageDto.class));
-        Assert.assertEquals(ResponseMessage.USER_NOT_FOUND, ((MessageDto) response.getBody()).getMessage());
+
+        //test get user with correct id
+        ResponseEntity okResponse = userService.getUser(userID);
+        Assert.assertEquals(HttpStatus.OK, okResponse.getStatusCode());
+        Assert.assertNotNull(okResponse.getBody());
+        Assert.assertThat(okResponse.getBody(), instanceOf(UserDto.class));
+        Assert.assertEquals(userID, ((UserDto) okResponse.getBody()).getId());
+
+        //test get user with wrong id
+        ResponseEntity notFoundResponse = userService.getUser(wrongUserID);
+        Assert.assertEquals(HttpStatus.NOT_FOUND, notFoundResponse.getStatusCode());
+        Assert.assertNotNull(notFoundResponse.getBody());
+        Assert.assertThat(notFoundResponse.getBody(), instanceOf(MessageDto.class));
+        Assert.assertEquals(ResponseMessage.USER_NOT_FOUND, ((MessageDto) notFoundResponse.getBody()).getMessage());
     }
 
     @Test
@@ -139,8 +136,9 @@ public class UserServiceTests extends BaseMockitoJUnitTests {
     }
 
     @Test
-    public void testUpdateUser_Ok() {
+    public void testUpdateUser() {
         String userID = "ID_1";
+        String wrongUserID = "WRONG_ID";
 
         User user = new User();
         user.setId(userID);
@@ -156,7 +154,13 @@ public class UserServiceTests extends BaseMockitoJUnitTests {
         newUserDto.setGender(Gender.FEMALE);
 
         when(userRepository.findFirstById(any(String.class)))
-                .thenAnswer((Answer<User>) invocation -> new User());
+                .thenAnswer((Answer<User>) invocation -> {
+                    String uid = invocation.getArgument(0);
+                    if (uid == null || wrongUserID.equals(uid)) {
+                        return null;
+                    }
+                    return new User();
+                });
 
         when(userRepository.save(any(User.class)))
                 .thenAnswer((Answer<Void>) invocation -> {
@@ -169,34 +173,21 @@ public class UserServiceTests extends BaseMockitoJUnitTests {
                     return null;
                 });
 
-        ResponseEntity response = userService.updateUser(userID, newUserDto);
-        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        //test update user with correct id
+        ResponseEntity okResponse = userService.updateUser(userID, newUserDto);
+        Assert.assertEquals(HttpStatus.OK, okResponse.getStatusCode());
         Assert.assertEquals(userID, user.getId());
         Assert.assertEquals(newUserDto.getFullName(), user.getFullName());
         Assert.assertEquals(newUserDto.getBirthday(), user.getBirthday());
         Assert.assertEquals(newUserDto.getAddress(), user.getAddress());
         Assert.assertEquals(newUserDto.getGender(), user.getGender());
-    }
 
-    @Test
-    public void testUpdateUser_NotFound() {
-        String wrongUserID = "WRONG_ID";
-        NewUserDto newUserDto = new NewUserDto();
-
-        when(userRepository.findFirstById(any(String.class)))
-                .thenAnswer((Answer<User>) invocation -> {
-                    String id = invocation.getArgument(0);
-                    if (id == null || wrongUserID.equals(id)) {
-                        return null;
-                    }
-                    return new User();
-                });
-
-        ResponseEntity response = userService.updateUser(wrongUserID, newUserDto);
-        Assert.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        Assert.assertNotNull(response.getBody());
-        Assert.assertThat(response.getBody(), instanceOf(MessageDto.class));
-        Assert.assertEquals(ResponseMessage.USER_NOT_FOUND, ((MessageDto) response.getBody()).getMessage());
+        //test update user with wrong id
+        ResponseEntity notFoundResponse = userService.updateUser(wrongUserID, newUserDto);
+        Assert.assertEquals(HttpStatus.NOT_FOUND, notFoundResponse.getStatusCode());
+        Assert.assertNotNull(notFoundResponse.getBody());
+        Assert.assertThat(notFoundResponse.getBody(), instanceOf(MessageDto.class));
+        Assert.assertEquals(ResponseMessage.USER_NOT_FOUND, ((MessageDto) notFoundResponse.getBody()).getMessage());
     }
 
     @Test
@@ -220,16 +211,16 @@ public class UserServiceTests extends BaseMockitoJUnitTests {
             return null;
         }).when(userRepository).delete(any(User.class));
 
-        //delete user with wrong id
+        //test delete user with correct id
+        ResponseEntity okResponse = userService.deleteUser(userID);
+        Assert.assertEquals(HttpStatus.OK, okResponse.getStatusCode());
+        Assert.assertFalse(userExists[0]);
+
+        //test delete user with wrong id
         ResponseEntity notFoundResponse = userService.deleteUser(wrongUserID);
         Assert.assertEquals(HttpStatus.NOT_FOUND, notFoundResponse.getStatusCode());
         Assert.assertNotNull(notFoundResponse.getBody());
         Assert.assertThat(notFoundResponse.getBody(), instanceOf(MessageDto.class));
         Assert.assertEquals(ResponseMessage.USER_NOT_FOUND, ((MessageDto) notFoundResponse.getBody()).getMessage());
-
-        //delete user with correct id
-        ResponseEntity okResponse = userService.deleteUser(userID);
-        Assert.assertEquals(HttpStatus.OK, okResponse.getStatusCode());
-        Assert.assertFalse(userExists[0]);
     }
 }

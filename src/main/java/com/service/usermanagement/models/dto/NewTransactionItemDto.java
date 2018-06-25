@@ -9,6 +9,14 @@ public class NewTransactionItemDto {
     @Min(1)
     private int quantity;
 
+    public NewTransactionItemDto() {
+    }
+
+    public NewTransactionItemDto(String productID, int quantity) {
+        this.productID = productID;
+        this.quantity = quantity;
+    }
+
     public int getQuantity() {
         return quantity;
     }

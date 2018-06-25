@@ -93,17 +93,15 @@ public class TransactionService {
                 notFoundProductIDs.add(entry.getKey());
             }
             return new ResponseEntity<>(new ValuesErrorDto(ResponseMessage.PRODUCT_NOT_FOUND, notFoundProductIDs),
-                    HttpStatus.BAD_REQUEST);
+                    HttpStatus.NOT_FOUND);
         }
     }
 
     public ResponseEntity deleteUserTransaction(String userID, String transactionID) {
-        User userFound = userRepository.findFirstById(userID);
-        if (userFound == null) {
+        if (!userRepository.existsById(userID)) {
             return new ResponseEntity<>(new MessageDto(ResponseMessage.USER_NOT_FOUND), HttpStatus.NOT_FOUND);
         }
-        boolean isUserTransactionExist = transactionRepository.existsByUser_IdAndId(userID, transactionID);
-        if (!isUserTransactionExist) {
+        if (!transactionRepository.existsByUser_IdAndId(userID, transactionID)) {
             return new ResponseEntity<>(new MessageDto(ResponseMessage.USER_TRANSACTION_NOT_FOUND), HttpStatus.NOT_FOUND);
         }
         transactionRepository.deleteById(transactionID);

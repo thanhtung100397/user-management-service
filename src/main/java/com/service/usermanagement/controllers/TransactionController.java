@@ -23,16 +23,16 @@ public class TransactionController extends BaseController {
 
     @GetMapping("/users/{uid}/transactions")
     public ResponseEntity getUserTransactions(@PathVariable("uid") String userID,
-                                                                              @RequestParam(required = false, defaultValue = Transaction.CREATED_AT) String sortBy,
-                                                                              @RequestParam(required = false, defaultValue = Constants.DESC) String sortType,
-                                                                              @RequestParam(required = false, defaultValue = "0") Integer pageIndex,
-                                                                              @RequestParam(required = false, defaultValue = Constants.MAX_PAGE_SIZE + "") Integer pageSize) {
+                                              @RequestParam(required = false, defaultValue = Transaction.CREATED_AT) String sortBy,
+                                              @RequestParam(required = false, defaultValue = Constants.DESC) String sortType,
+                                              @RequestParam(required = false, defaultValue = "0") Integer pageIndex,
+                                              @RequestParam(required = false, defaultValue = Constants.MAX_PAGE_SIZE + "") Integer pageSize) {
         return transactionService.getUserTransactions(userID, sortBy, sortType, pageIndex, pageSize);
     }
 
     @GetMapping("/users/{uid}/transactions/{tid}")
     public ResponseEntity getUserTransaction(@PathVariable("uid") String userID,
-                                                             @PathVariable("tid") String transactionID) {
+                                             @PathVariable("tid") String transactionID) {
         return transactionService.getUserTransaction(userID, transactionID);
     }
 
