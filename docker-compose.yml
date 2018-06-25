@@ -1,9 +1,11 @@
 version: "3"
 services:
-  web:
-    image: com.service/user-management:latest
+  user-management-service:
+    image: user-management:latest
+    depends_on:
+      - mysql_database
     deploy:
-      replicas: 3
+      replicas: 1
       resources:
         limits:
           cpus: "0.3"
@@ -11,19 +13,31 @@ services:
       restart_policy:
         condition: on-failure
     ports:
-      - "8080:8080"
-    networks:
-      - webnet
+      - 8080:8080
+    links:
+      - mysql_database:mysql
+    environment:
+      - DB_URL=mysql:3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=1111
+      - FAKE_DATA=true
+  mysql_database:
+    image: mysql:5.6.39
+    ports:
+      - 3308:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=1111
   visualizer:
       image: dockersamples/visualizer:stable
       ports:
-        - "8900:8080"
+        - 8900:8080
       volumes:
-        - "/var/run/docker.sock:/var/run/docker.sock"
+        - /var/run/docker.sock:/var/run/docker.sock
       deploy:
         placement:
           constraints: [node.role == manager]
-      networks:
-        - webnet
-networks:
-  webnet:
+
+volumes:
+  mysql_data:

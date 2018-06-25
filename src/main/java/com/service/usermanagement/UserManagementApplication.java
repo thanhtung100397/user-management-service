@@ -49,10 +49,10 @@ public class UserManagementApplication implements CommandLineRunner {
         if (fakeData.equals("true")) {
             dataFakerService.fakeUserData(10);
             System.out.println("Fake 10 user data");
-            dataFakerService.fakeProduct(20);
+            dataFakerService.fakeProduct(10);
             System.out.println("Fake 10 product");
-            dataFakerService.fakeTransaction(20);
-            System.out.println("Fake 20 transaction");
+            dataFakerService.fakeTransaction(10);
+            System.out.println("Fake 10 transaction");
         }
     }
 }
