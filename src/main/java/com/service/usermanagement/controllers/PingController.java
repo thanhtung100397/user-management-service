@@ -4,6 +4,7 @@ import com.service.usermanagement.models.dto.MessageDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,17 +14,17 @@ public class PingController extends BaseController {
     @Value("${server.port}")
     String port;
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public ResponseEntity ping() {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping("/greeting")
+    @GetMapping("/greeting")
     public ResponseEntity sayHello() {
         return new ResponseEntity<>("Hello from user-management-service at port = "+port, HttpStatus.OK);
     }
 
-    @RequestMapping("/delayResponse")
+    @GetMapping("/delayResponse")
     public ResponseEntity delayResponse(@RequestParam("millis") int millis) {
         try {
             Thread.sleep(millis);
