@@ -3,9 +3,7 @@ FROM gradle:4.8.0-jdk8-alpine AS GRADLE_BUILD_IMAGE
 USER root
 WORKDIR /app/
 COPY build.gradle gradlew gradlew.bat settings.gradle gradle /app/
-#COPY gradle /app/gralde/
 RUN gradle dependencies --stacktrace
-
 COPY src /app/src
 RUN gradle build --stacktrace
 
@@ -13,18 +11,18 @@ FROM openjdk:8-jre-alpine
 WORKDIR /jar/
 COPY --from=GRADLE_BUILD_IMAGE /app/build/libs/user-management-0.0.1-SNAPSHOT.jar app.jar
 ENV DB_URL=127.0.0.1:3306 \
-    DB_NAME=user_management_database
+    DB_NAME=user_management_database \
     DB_USERNAME=root \
     DB_PASSWORD=1111 \
     FAKE_DATA=false
 CMD ["java", \
-            "-Djava.security.egd=file:/dev/./urandom", \
-            "-jar", \
-            "/jar/app.jar", \
-            "--spring.datasource.url=jdbc:mysql://${DB_URL}/${DB_NAME}?createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true&useSSL=true", \
-            "--spring.datasource.username=${DB_USERNAME}", \
-            "--spring.datasource.password=${DB_PASSWORD}", \
-            "--fakedata=${FAKE_DATA}"]
+     "-Djava.security.egd=file:/dev/./urandom", \
+     "-jar", \
+     "/jar/app.jar", \
+     "--spring.datasource.url=jdbc:mysql://${DB_URL}/${DB_NAME}?createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true&useSSL=true", \
+     "--spring.datasource.username=${DB_USERNAME}", \
+     "--spring.datasource.password=${DB_PASSWORD}", \
+     "--fakedata=${FAKE_DATA}"]
 
 
 

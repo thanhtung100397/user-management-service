@@ -5,21 +5,21 @@ spring:
 server:
   port: 8080
 
-#eureka:
-#  instance:
-#    lease-renewal-interval-in-seconds: 3
-#    lease-expiration-duration-in-seconds: 5
-#    health-check-url-path: /health
-#  client:
-#    service-url:
-#      default-zone: http://localhost:8761/eureka/
-#    healthcheck:
-#      enable: true
-#    lease:
-#      duration: 5
-#
-#management:
-#  sercurity:
-#    enabled: false
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 3
+    lease-expiration-duration-in-seconds: 5
+    health-check-url-path: /health
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+    healthcheck:
+      enable: true
+    lease:
+      duration: 5
+
+management:
+  sercurity:
+    enabled: false
 
 
