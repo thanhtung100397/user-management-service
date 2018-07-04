@@ -12,7 +12,7 @@ eureka:
     health-check-url-path: /health
   client:
     service-url:
-      default-zone: http://localhost:8761/eureka/
+      default-zone: http://35.190.139.189:8761/eureka/
     healthcheck:
       enable: true
     lease:

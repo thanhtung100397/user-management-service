@@ -50,14 +50,6 @@ dependencies {
 	compile("io.springfox:springfox-swagger2:2.7.0")
 	compile("io.springfox:springfox-swagger-ui:2.7.0")
 
-	//view health, status, info,... (for service discovery)
-	compile("org.springframework.boot:spring-boot-starter-actuator")
-
-	//eureka client
-	compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
-
-	compile("org.springframework.boot:spring-boot-starter-amqp")
-
 	compile group: 'com.github.javafaker', name: 'javafaker', version: '0.15'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
