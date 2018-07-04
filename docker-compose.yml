@@ -10,14 +10,15 @@ services:
     links:
       - mysql_database:mysql
     environment:
-      DB_URL: mysql:3306
-      DB_NAME: user_management_database
-      DB_USERNAME: root
-      DB_PASSWORD: 1111
-      FAKE_DATA: true
+      - DB_URL=mysql:3306
+      - DB_NAME=user_management_database
+      - DB_USERNAME=root
+      - DB_PASSWORD=1111
+      - FAKE_DATA=true
 
   mysql_database:
     image: mysql:5.6.39
+    restart: on-failure
     ports:
       - 3308:3306
     volumes:

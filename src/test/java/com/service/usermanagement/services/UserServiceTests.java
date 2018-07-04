@@ -7,7 +7,7 @@ import com.service.usermanagement.models.dto.MessageDto;
 import com.service.usermanagement.models.dto.NewUserDto;
 import com.service.usermanagement.models.dto.PageDto;
 import com.service.usermanagement.models.dto.UserDto;
-import com.service.usermanagement.models.entities.Gender;
+import com.service.usermanagement.models.entities.UserGender;
 import com.service.usermanagement.models.entities.User;
 import com.service.usermanagement.repository.UserRepository;
 import org.junit.Assert;
@@ -50,7 +50,7 @@ public class UserServiceTests extends BaseMockitoJUnitTests {
                     for (int i = 0; i < totalItem; i++) {
                         int number = i + 1;
                         usersDto.add(new UserDto("ID_" + number, "Full Name " + number,
-                                LocalDate.of(2000, 1, 1), "Address " + number, Gender.MALE));
+                                LocalDate.of(2000, 1, 1), "Address " + number, UserGender.MALE));
                     }
                     return new PageImpl<>(usersDto, pageable, usersDto.size());
                 });
@@ -77,7 +77,7 @@ public class UserServiceTests extends BaseMockitoJUnitTests {
                         return null;
                     }
                     return new UserDto(uid, "Full Name 1",
-                            LocalDate.of(2000, 1, 1), "Address 1", Gender.MALE);
+                            LocalDate.of(2000, 1, 1), "Address 1", UserGender.MALE);
                 });
 
         //test get user with correct id
@@ -101,7 +101,7 @@ public class UserServiceTests extends BaseMockitoJUnitTests {
         newUserDto.setFullName("Full Name");
         newUserDto.setAddress("Address");
         newUserDto.setBirthday(LocalDate.of(2000, 1, 1));
-        newUserDto.setGender(Gender.MALE);
+        newUserDto.setUserGender(UserGender.MALE);
 
         User user = new User();
 
@@ -132,7 +132,7 @@ public class UserServiceTests extends BaseMockitoJUnitTests {
         Assert.assertEquals(newUserDto.getBirthday(), user.getBirthday());
 
         Assert.assertNotNull(user.getGender());
-        Assert.assertEquals(newUserDto.getGender(), user.getGender());
+        Assert.assertEquals(newUserDto.getUserGender(), user.getGender());
     }
 
     @Test
@@ -145,13 +145,13 @@ public class UserServiceTests extends BaseMockitoJUnitTests {
         user.setFullName("Old Name");
         user.setAddress("Old Address");
         user.setBirthday(LocalDate.of(2000, 1, 1));
-        user.setGender(Gender.MALE);
+        user.setGender(UserGender.MALE);
 
         NewUserDto newUserDto = new NewUserDto();
         newUserDto.setFullName("New Name");
         newUserDto.setAddress("Address");
         newUserDto.setBirthday(LocalDate.of(2002, 2, 2));
-        newUserDto.setGender(Gender.FEMALE);
+        newUserDto.setUserGender(UserGender.FEMALE);
 
         when(userRepository.findFirstById(any(String.class)))
                 .thenAnswer((Answer<User>) invocation -> {
@@ -180,7 +180,7 @@ public class UserServiceTests extends BaseMockitoJUnitTests {
         Assert.assertEquals(newUserDto.getFullName(), user.getFullName());
         Assert.assertEquals(newUserDto.getBirthday(), user.getBirthday());
         Assert.assertEquals(newUserDto.getAddress(), user.getAddress());
-        Assert.assertEquals(newUserDto.getGender(), user.getGender());
+        Assert.assertEquals(newUserDto.getUserGender(), user.getGender());
 
         //test update user with wrong id
         ResponseEntity notFoundResponse = userService.updateUser(wrongUserID, newUserDto);

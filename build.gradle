@@ -23,6 +23,9 @@ apply plugin: "com.palantir.docker-compose"
 
 group = 'com.service'
 version = '0.0.1-SNAPSHOT'
+processResources {
+	expand(project.properties)
+}
 sourceCompatibility = 1.8
 
 docker {
@@ -49,6 +52,9 @@ dependencies {
 	//swagger
 	compile("io.springfox:springfox-swagger2:2.7.0")
 	compile("io.springfox:springfox-swagger-ui:2.7.0")
+
+	//actuator
+	compile('org.springframework.boot:spring-boot-starter-actuator')
 
 	compile group: 'com.github.javafaker', name: 'javafaker', version: '0.15'
 	testCompile('org.springframework.boot:spring-boot-starter-test')

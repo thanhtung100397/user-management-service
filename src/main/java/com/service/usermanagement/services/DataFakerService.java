@@ -40,7 +40,7 @@ public class DataFakerService {
             LocalDate fakeBirthday = faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             fakeUser.setBirthday(fakeBirthday);
             fakeUser.setAddress(faker.address().fullAddress());
-            fakeUser.setGender(faker.random().nextBoolean() ? Gender.FEMALE : Gender.MALE);
+            fakeUser.setGender(faker.random().nextBoolean() ? UserGender.FEMALE : UserGender.MALE);
             fakeUsers.add(fakeUser);
         }
         userRepository.saveAll(fakeUsers);

@@ -1,7 +1,6 @@
 package com.service.usermanagement.validation.date;
 
 import com.service.usermanagement.constants.Constants;
-import com.service.usermanagement.validation.gender_string.GenderValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

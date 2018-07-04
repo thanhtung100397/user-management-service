@@ -16,9 +16,8 @@ public class User {
     private String fullName;
     private LocalDate birthday;
     private String address;
-
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private UserGender gender;
 
     public User() {
     }
@@ -31,7 +30,7 @@ public class User {
         setFullName(newUserDto.getFullName());
         setBirthday(newUserDto.getBirthday());
         setAddress(newUserDto.getAddress());
-        setGender(newUserDto.getGender());
+        setGender(UserGender.valueOf(newUserDto.getUserGender()));
     }
 
     public String getId() {
@@ -66,11 +65,11 @@ public class User {
         this.address = address;
     }
 
-    public Gender getGender() {
+    public UserGender getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(UserGender gender) {
         this.gender = gender;
     }
 }

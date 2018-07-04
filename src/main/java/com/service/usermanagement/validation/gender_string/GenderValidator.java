@@ -1,6 +1,6 @@
 package com.service.usermanagement.validation.gender_string;
 
-import com.service.usermanagement.constants.Constants;
+import com.service.usermanagement.models.entities.UserGender;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -15,8 +15,8 @@ public class GenderValidator implements ConstraintValidator<Gender, String> {
 
     @Override
     public boolean isValid(String inputValue, ConstraintValidatorContext context) {
-        return Constants.MALE.equals(inputValue) ||
-                Constants.FEMALE.equals(inputValue) ||
+        return UserGender.MALE.name().equals(inputValue) ||
+                UserGender.MALE.name().equals(inputValue) ||
                 (acceptNull && inputValue == null);
     }
 }

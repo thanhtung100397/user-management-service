@@ -1,6 +1,6 @@
 package com.service.usermanagement.models.dto;
 
-import com.service.usermanagement.models.entities.Gender;
+import com.service.usermanagement.models.entities.UserGender;
 import com.service.usermanagement.models.entities.User;
 
 import java.time.LocalDate;
@@ -10,22 +10,22 @@ public class UserDto {
     private String fullName;
     private LocalDate birthday;
     private String address;
-    private Gender gender;
+    private UserGender userGender;
 
     public UserDto(User user) {
         setId(user.getId());
         setFullName(user.getFullName());
         setBirthday(user.getBirthday());
         setAddress(user.getAddress());
-        setGender(user.getGender());
+        setUserGender(user.getGender());
     }
 
-    public UserDto(String id, String fullName, LocalDate birthday, String address, Gender gender) {
+    public UserDto(String id, String fullName, LocalDate birthday, String address, UserGender userGender) {
         this.id = id;
         this.fullName = fullName;
         this.birthday = birthday;
         this.address = address;
-        this.gender = gender;
+        this.userGender = userGender;
     }
 
     public UserDto() {
@@ -63,11 +63,11 @@ public class UserDto {
         this.address = address;
     }
 
-    public Gender getGender() {
-        return gender;
+    public UserGender getUserGender() {
+        return userGender;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
+    public void setUserGender(UserGender userGender) {
+        this.userGender = userGender;
     }
 }
