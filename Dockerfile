@@ -32,7 +32,7 @@ VOLUME /tmp
 ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
 ENV DB_URL=127.0.0.1:3306 \
-    DB_NAME=user_management_database
+    DB_NAME=user_management_database \
     DB_USERNAME=root \
     DB_PASSWORD=1111 \
     FAKE_DATA=false
