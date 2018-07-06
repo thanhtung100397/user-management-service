@@ -10,7 +10,7 @@ services:
     links:
       - mysql_database:mysql
     environment:
-      - DB_URL=mysql=3306
+      - DB_URL=mysql:3306
       - DB_NAME=user_management_database
       - DB_USERNAME=root
       - DB_PASSWORD=1111
