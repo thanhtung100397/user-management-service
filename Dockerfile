@@ -35,15 +35,19 @@ ENV DB_URL=127.0.0.1:3306 \
     DB_NAME=user_management_database \
     DB_USERNAME=root \
     DB_PASSWORD=1111 \
-    FAKE_DATA=false
-ENTRYPOINT ["java", \
-            "-Djava.security.egd=file:/dev/./urandom", \
-            "-jar", \
-            "/app.jar", \
-            "--spring.datasource.url=jdbc:mysql://${DB_URL}/${DB_NAME}?createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true&useSSL=true", \
-            "--spring.datasource.username=${DB_USERNAME}", \
-            "--spring.datasource.password=${DB_PASSWORD}", \
-            "--fakedata=${FAKE_DATA}"]
+    FAKE_DATA=false \
+    CONSUL_HOST=127.0.0.1 \
+    CONSUL_PORT=8500
+CMD ["java", \
+     "-Djava.security.egd=file:/dev/./urandom", \
+     "-jar", \
+     "/app.jar", \
+     "--spring.datasource.url=jdbc:mysql://${DB_URL}/${DB_NAME}?createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true", \
+     "--spring.datasource.username=${DB_USERNAME}", \
+     "--spring.datasource.password=${DB_PASSWORD}", \
+     "--fakedata=${FAKE_DATA}", \
+     "--spring.cloud.consul.host=${CONSUL_HOST}", \
+     "--spring.cloud.consul.port=${CONSUL_PORT}"]
 
 #3. LOAD DEPENDENCY, BUILD THEN CREATE IMAGE FROM ARTIFACT
 #FROM gradle:4.8.0-jdk8-alpine

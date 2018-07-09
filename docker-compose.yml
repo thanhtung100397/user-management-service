@@ -1,31 +1,59 @@
 version: "3"
 services:
-  user-management-service:
+  service-discovery:
+    image: consul:latest
+    restart: on-failure
+    ports:
+      - 8500:8500
+
+  service1:
     image: user-management:latest
     depends_on:
-      - mysql_database
+      - service-discovery
     restart: on-failure
     ports:
-      - 8080:8080
+      - 3000:8080
     links:
       - mysql_database:mysql
+      - service-discovery:consul
     environment:
-      - DB_URL=mysql:3306
+      - DB_URL=mysql:3308
       - DB_NAME=user_management_database
       - DB_USERNAME=root
-      - DB_PASSWORD=1111
+      - DB_PASSWORD=Worksvn
       - FAKE_DATA=true
+      - CONSUL_HOST=consul \
+      - CONSUL_PORT=8500
 
-  mysql_database:
-    image: mysql:5.6.39
+  service2:
+    image: user-management:latest
+    depends_on:
+      - service-discovery
     restart: on-failure
     ports:
-      - 3308:3306
-    volumes:
-      - mysql_data:/var/lib/mysql
+      - 3001:8080
+    links:
+      - mysql_database:mysql
+      - service-discovery:consul
     environment:
-      - MYSQL_ROOT_PASSWORD=1111
-      - MYSQL_DATABASE=user_management_database
+      - DB_URL=mysql:3308
+      - DB_NAME=user_management_database
+      - DB_USERNAME=root
+      - DB_PASSWORD=Worksvn
+      - FAKE_DATA=true
+      - CONSUL_HOST=consul \
+      - CONSUL_PORT=8500
 
-volumes:
-  mysql_data:
+#  mysql_database:
+#    image: mysql:5.6.39
+#    restart: on-failure
+#    ports:
+#      - 3308:3306
+#    volumes:
+#      - mysql_data:/var/lib/mysql
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=1111
+#      - MYSQL_DATABASE=user_management_database
+
+#volumes:
+#  mysql_data:

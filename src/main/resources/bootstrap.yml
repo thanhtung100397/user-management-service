@@ -9,6 +9,9 @@ spring:
         instanceId: ${spring.application.name}:${server.port}
         healthCheckPath: /actuator/health
         healthCheckInterval: 10s
+      config:
+        enabled: true
+        format: properties
 
 server:
   port: 8080
