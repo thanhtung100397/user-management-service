@@ -22,7 +22,7 @@ services:
       - DB_USERNAME=root
       - DB_PASSWORD=Worksvn
       - FAKE_DATA=true
-      - CONSUL_HOST=consul \
+      - CONSUL_HOST=consul
       - CONSUL_PORT=8500
 
   service2:
