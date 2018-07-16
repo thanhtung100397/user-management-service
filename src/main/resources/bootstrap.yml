@@ -1,20 +1,14 @@
-spring:
-  application:
-    name: user-management-service
-  cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        instanceId: ${spring.application.name}:${server.port}
-        healthCheckPath: /actuator/health
-        healthCheckInterval: 10s
-      config:
-        enabled: true
-        format: properties
-
-server:
-  port: 8080
+#  cloud:
+#    consul:
+#      host: localhost
+#      port: 8500
+#      discovery:
+#        instanceId: ${spring.application.name}:${server.port}
+#        healthCheckPath: /actuator/health
+#        healthCheckInterval: 10s
+#      config:
+#        enabled: true
+#        format: properties
 
 management:
   sercurity:

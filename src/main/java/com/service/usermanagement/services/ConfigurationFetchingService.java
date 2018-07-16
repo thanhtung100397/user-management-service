@@ -2,8 +2,6 @@ package com.service.usermanagement.services;
 
 import com.service.usermanagement.config.DynamicConfigurationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +42,7 @@ public class ConfigurationFetchingService {
         return content.toString();
     }
 
-    public ResponseEntity getConfigurationField() {
-        return new ResponseEntity<>(dynamicConfigurationProperties.getTest(), HttpStatus.OK);
-    }
+//    public ResponseEntity getConfigurationField() {
+//        return new ResponseEntity<>(dynamicConfigurationProperties.getTest(), HttpStatus.OK);
+//    }
 }

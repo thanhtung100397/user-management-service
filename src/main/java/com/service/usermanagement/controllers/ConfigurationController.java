@@ -1,9 +1,7 @@
 package com.service.usermanagement.controllers;
 
-import com.service.usermanagement.config.DynamicConfigurationProperties;
 import com.service.usermanagement.services.ConfigurationFetchingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +24,8 @@ public class ConfigurationController {
         }
     }
 
-    @GetMapping("/config/{field}")
-    public ResponseEntity getConfiguration(@PathVariable("field") String field) {
-        return configurationFetchingService.getConfigurationField();
-    }
+//    @GetMapping("/config/{field}")
+//    public ResponseEntity getConfiguration(@PathVariable("field") String field) {
+//        return configurationFetchingService.getConfigurationField();
+//    }
 }

@@ -1,7 +1,6 @@
 package com.service.usermanagement.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -9,10 +8,10 @@ import org.springframework.context.annotation.Configuration;
 public class DynamicConfigurationProperties {
     private String test;
 
-    @RefreshScope
-    public String getTest() {
-        return test;
-    }
+//    @RefreshScope
+//    public String getTest() {
+//        return test;
+//    }
 
     public void setTest(String test) {
         this.test = test;

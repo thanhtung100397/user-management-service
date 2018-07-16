@@ -6,7 +6,6 @@ import org.springframework.boot.actuate.info.InfoContributor;
 import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 
 @Component
@@ -17,11 +16,7 @@ public class HostContributor implements InfoContributor {
     @Override
     public void contribute(Info.Builder builder) {
         HashMap<String, Object> info = new HashMap<>();
-        try {
-            info.put("address", InetAddress.getLocalHost().getHostAddress());
-        } catch (UnknownHostException e) {
-            info.put("address", e.getMessage());
-        }
+        info.put("address", InetAddress.getLoopbackAddress().getHostAddress());
         info.put("port", port);
         builder.withDetail("host", info);
     }

@@ -58,8 +58,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 
 	//consul
-	compile('org.springframework.cloud:spring-cloud-starter-consul-all')
-	compile('org.springframework.cloud:spring-cloud-starter-consul-config')
+//	compile('org.springframework.cloud:spring-cloud-starter-consul-all')
+//	compile('org.springframework.cloud:spring-cloud-starter-consul-config')
 
 	compile group: 'com.github.javafaker', name: 'javafaker', version: '0.15'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
