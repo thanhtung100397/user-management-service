@@ -34,11 +34,13 @@ public class ConsulRegistrationService {
     private RestTemplate restTemplate;
 
     public ResponseEntity registerServiceToConsul() {
-        String healCheckUrl = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + serverPort + healCheckPath;
+        String serverAddress = InetAddress.getLoopbackAddress().getHostAddress();
+        String healCheckUrl = "http://" + serverAddress + ":" + serverPort + healCheckPath;
 
         ConsulRegistrationPayload consulRegistrationPayload =
                 new ConsulRegistrationPayload(serviceID,
                         serviceName,
+                        serverAddress,
                         serverPort,
                         deregisterCriticalServiceAfter,
                         healCheckUrl,
