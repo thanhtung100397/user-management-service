@@ -9,8 +9,6 @@ public class ConsulRegistrationPayload implements Serializable {
     private String ID;
     @JsonProperty("Name")
     private String Name;
-    @JsonProperty("Address")
-    private String Address;
     @JsonProperty("Port")
     private int Port;
     @JsonProperty("Check")
@@ -18,14 +16,12 @@ public class ConsulRegistrationPayload implements Serializable {
 
     public ConsulRegistrationPayload(String ID,
                                      String name,
-                                     String address,
                                      int port,
                                      String deregisterCriticalServiceAfter,
                                      String http,
                                      String interval) {
         this.ID = ID;
         this.Name = name;
-        this.Address = address;
         this.Port = port;
         this.Check = new ConsulHealCheckPayload(deregisterCriticalServiceAfter, http, interval);
     }
@@ -44,14 +40,6 @@ public class ConsulRegistrationPayload implements Serializable {
 
     public void setName(String name) {
         Name = name;
-    }
-
-    public String getAddress() {
-        return Address;
-    }
-
-    public void setAddress(String address) {
-        Address = address;
     }
 
     public int getPort() {

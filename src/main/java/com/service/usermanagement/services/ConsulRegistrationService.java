@@ -20,28 +20,28 @@ public class ConsulRegistrationService {
     private String serviceName;
     @Value("${consul.url}")
     private String consulServerUrl;
+    @Value("${server.port}")
+    private int serverPort;
+
     @Value("${consul.deregister-critical-service-after}")
     private String deregisterCriticalServiceAfter;
     @Value("${consul.heal-check-path}")
     private String healCheckPath;
     @Value("${consul.heal-check-interval}")
     private String healCheckInterval;
-    @Value("${server.port}")
-    private int serverPort;
 
     @Autowired
     private RestTemplate restTemplate;
 
     public ResponseEntity registerServiceToConsul() {
-        String serviceAddress = "http://" + InetAddress.getLoopbackAddress().getHostAddress();
+        String healCheckUrl = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":" + serverPort + healCheckPath;
 
         ConsulRegistrationPayload consulRegistrationPayload =
                 new ConsulRegistrationPayload(serviceID,
                         serviceName,
-                        serviceAddress,
                         serverPort,
                         deregisterCriticalServiceAfter,
-                        serviceAddress + ":" + serverPort + healCheckPath,
+                        healCheckUrl,
                         healCheckInterval);
 
         HttpHeaders headers = new HttpHeaders();
